@@ -1,0 +1,17 @@
+[
+    {
+        "title": "Victor",
+        "price": 9.99,
+        "discountPercentage": 10.48,
+        "stock": 99,
+        "rating": 2.56,
+        "images": [
+            "https://http2.mlstatic.com/D_NQ_NP_2X_775572-MLA84809859667_052025-F.webp"
+        ],
+        "thumbnail": "https://http2.mlstatic.com/D_NQ_NP_2X_962126-MLA85458755321_052025-F.webp",
+        "description": "Pruba victor",
+        "brand": "Essence",
+        "category": "beauty"
+    }
+    
+]

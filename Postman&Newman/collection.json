@@ -1,0 +1,745 @@
+{
+	"info": {
+		"_postman_id": "6fae6a0f-796b-434d-a6da-c8d1c0983420",
+		"name": "Set_De_Pruebas_Dummy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28090217",
+		"_collection_link": "https://desafiolatam-4098.postman.co/workspace/Deafio_Latam~8c58dd56-c893-4a0f-b575-aac1dcfe7e59/collection/28090217-6fae6a0f-796b-434d-a6da-c8d1c0983420?action=share&source=collection_link&creator=28090217"
+	},
+	"item": [
+		{
+			"name": "Login_Invalido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"",
+							"if (responseBody.message === \"Invalid credentials\") {",
+							"    pm.test(\"Se devuelve un mensaje de credenciales no válidas\", function () {",
+							"        pm.expect(responseBody.message).to.eql(\"Invalid credentials\");",
+							"    })",
+							"}",
+							"",
+							"pm.test(\"El código de estado es 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"})",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\"); ",
+							"})",
+							"",
+							"const maxTime = 3000; ",
+							"const actualTime = pm.response.responseTime;",
+							"",
+							"pm.test(`Tiempo de respuesta < ${maxTime}ms`, function () {",
+							"    pm.expect(actualTime).to.be.below(maxTime);",
+							"});",
+							"",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"victor\",\r\n    \"password\":\"emilyspass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login_Valido",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"",
+							"pm.environment.set(\"accessToken\", responseBody.accessToken);",
+							"pm.environment.set(\"refreshToken\", responseBody.refreshToken);",
+							"pm.environment.set(\"id\", responseBody.id);",
+							"console.log(\"Environment variables set successfully.\");",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"const maxTime = 3000; ",
+							"const actualTime = pm.response.responseTime;",
+							"",
+							"pm.test(`Tiempo de respuesta < ${maxTime}ms`, function () {",
+							"    pm.expect(actualTime).to.be.below(maxTime);",
+							"});",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\"); ",
+							"})",
+							"",
+							"pm.test('Nombre y apellidos no vacíos', () => {",
+							"  const b = pm.response.json();",
+							"  pm.expect(b.firstName||'').to.not.equal('');",
+							"  pm.expect(b.lastName||'').to.not.equal('');",
+							"});",
+							"",
+							"function isJWT(t){ return /^[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+\\.[A-Za-z0-9-_]+$/.test(t); }",
+							"pm.test('Tokens con formato JWT', () => {",
+							"  const b = pm.response.json();",
+							"  pm.expect(isJWT(b.accessToken)).to.be.true;",
+							"  pm.expect(isJWT(b.refreshToken)).to.be.true;",
+							"});",
+							"pm.test('Contrato básico', () => {",
+							"  ['accessToken','refreshToken','id','username','email'].forEach(k => pm.expect(responseBody).to.have.property(k));",
+							"  pm.expect(responseBody.id).to.be.a('number');",
+							"  pm.expect(responseBody.username).to.be.a('string').and.not.empty;",
+							"  pm.expect(responseBody.email).to.match(/@/);",
+							"});",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"emilys\",\r\n    \"password\":\"emilyspass\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Agreagar_Producto",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"",
+							"const requestBody = JSON.parse(pm.request.body.raw);",
+							"",
+							"pm.test(\"Título devuelto = Título enviado\", function(){",
+							"    pm.expect(responseBody.title).to.eql(requestBody.title);",
+							"});",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"const maxTime = 3000; ",
+							"const actualTime = pm.response.responseTime;",
+							"",
+							"pm.test(`Tiempo de respuesta < ${maxTime}ms`, function () {",
+							"    pm.expect(actualTime).to.be.below(maxTime);",
+							"});",
+							"",
+							"",
+							"pm.test(\"Content-Type is application/json\", function () {",
+							"    pm.response.to.have.header(\"content-type\", \"application/json; charset=utf-8\"); ",
+							"})",
+							"",
+							"",
+							"pm.test(\"Validar que el ID sea 195\", function () {",
+							"    pm.expect(pm.response.json().id).to.eql(195);",
+							"});",
+							"",
+							"pm.test(\"price es número\", function () {",
+							"    pm.expect(responseBody.price).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"stock es número\", function () {",
+							"    pm.expect(responseBody.stock).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"rating es número\", function () {",
+							"    pm.expect(responseBody.rating).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"discountPercentage es número\", function () {",
+							"    pm.expect(responseBody.discountPercentage).to.be.a(\"number\");",
+							"});",
+							"",
+							"})();",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"{{title}}\",\r\n    \"price\": {{price}},\r\n    \"discountPercentage\": {{discountPercentage}},\r\n    \"stock\": {{stock}},\r\n    \"rating\": {{rating}},\r\n    \"description\": \"{{description}}\",\r\n    \"brand\": \"{{brand}}\",\r\n    \"category\": \"{{category}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/add",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Todos_Los_Productos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"",
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"",
+							"// 1) Código y performance (ya lo tienes)",
+							"pm.test(\"El código de estado es 200\", () => pm.response.to.have.status(200));",
+							"",
+							"const maxTime = 3000; ",
+							"pm.test(`Tiempo de respuesta < ${maxTime}ms`, () => {",
+							"    pm.expect(pm.response.responseTime).to.be.below(maxTime);",
+							"});",
+							"",
+							"// 2) Array no vacío (ya lo tienes)",
+							"pm.test(\"El Array 'products' no está vacío\", () => {",
+							"    pm.expect(responseBody.products).to.be.an('array').that.is.not.empty;",
+							"});",
+							"",
+							"// 3) Validar que todos los productos tengan ID numérico",
+							"pm.test(\"Todos los productos tienen 'id' numérico\", () => {",
+							"    responseBody.products.forEach(p => {",
+							"        pm.expect(p.id).to.be.a('number');",
+							"    });",
+							"});",
+							"",
+							"// 4) Validar que todos tengan título no vacío",
+							"pm.test(\"Todos los productos tienen título no vacío\", () => {",
+							"    responseBody.products.forEach(p => {",
+							"        pm.expect(p.title).to.be.a('string').and.not.empty;",
+							"    });",
+							"});",
+							"",
+							"// 5) Precio mayor que 0",
+							"pm.test(\"Todos los productos tienen precio > 0\", () => {",
+							"    responseBody.products.forEach(p => {",
+							"        pm.expect(p.price).to.be.above(0);",
+							"    });",
+							"});",
+							"",
+							"// 6) Rating entre 0 y 5",
+							"pm.test(\"Todos los productos tienen rating válido\", () => {",
+							"    responseBody.products.forEach(p => {",
+							"        pm.expect(p.rating).to.be.within(0, 5);",
+							"    });",
+							"});",
+							"",
+							"// 7) Stock mayor o igual a 0",
+							"pm.test(\"Todos los productos tienen stock >= 0\", () => {",
+							"    responseBody.products.forEach(p => {",
+							"        pm.expect(p.stock).to.be.at.least(0);",
+							"    });",
+							"});",
+							"",
+							"// 8) Validar que 'images' y 'thumbnail' sean URLs válidas",
+							"pm.test(\"Imágenes y thumbnails son URLs válidas\", () => {",
+							"    const urlRegex = /^https?:\\/\\/.+/;",
+							"    responseBody.products.forEach(p => {",
+							"        p.images.forEach(img => pm.expect(img).to.match(urlRegex));",
+							"        pm.expect(p.thumbnail).to.match(urlRegex);",
+							"    });",
+							"});",
+							"",
+							"// 9) Validar reviews (si existen)",
+							"pm.test(\"Reviews con rating válido y email correcto\", () => {",
+							"    const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;",
+							"    responseBody.products.forEach(p => {",
+							"        if (p.reviews && p.reviews.length) {",
+							"            p.reviews.forEach(r => {",
+							"                pm.expect(r.rating).to.be.within(0, 5);",
+							"                pm.expect(r.reviewerEmail).to.match(emailRegex);",
+							"            });",
+							"        }",
+							"    });",
+							"});",
+							"",
+							"// 10) Validar 'meta' obligatorio",
+							"pm.test(\"Cada producto tiene meta con createdAt y updatedAt\", () => {",
+							"    responseBody.products.forEach(p => {",
+							"        pm.expect(p.meta).to.have.property('createdAt');",
+							"        pm.expect(p.meta).to.have.property('updatedAt');",
+							"    });",
+							"});",
+							"",
+							"})();",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{accessToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto_Por_Id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"",
+							"",
+							"// Verificar que el ID sea 19",
+							"pm.test(\"Validar que el ID sea 19\", function () {",
+							"    pm.expect(responseBody.id).to.eql(19);",
+							"});",
+							"",
+							"// Validar que price, stock, rating y discountPercentage sean números",
+							"pm.test(\"price es número\", function () {",
+							"    pm.expect(responseBody.price).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"stock es número\", function () {",
+							"    pm.expect(responseBody.stock).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"rating es número\", function () {",
+							"    pm.expect(responseBody.rating).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"discountPercentage es número\", function () {",
+							"    pm.expect(responseBody.discountPercentage).to.be.a(\"number\");",
+							"});",
+							"",
+							"// Validar que el título no esté vacío",
+							"pm.test(\"Título no está vacío\", function () {",
+							"    pm.expect(responseBody.title).to.not.be.empty;",
+							"});",
+							"",
+							"// Validar que la categoría sea 'groceries'",
+							"pm.test(\"Categoría correcta\", function () {",
+							"    pm.expect(responseBody.category).to.eql(\"groceries\");",
+							"});",
+							"",
+							"// Validar que el array de imágenes tenga al menos 1 elemento",
+							"pm.test(\"Tiene imágenes\", function () {",
+							"    pm.expect(responseBody.images.length).to.be.above(0);",
+							"});",
+							"",
+							"// Validar que las dimensiones tengan valores numéricos",
+							"pm.test(\"Dimensiones son numéricas\", function () {",
+							"    pm.expect(responseBody.dimensions.width).to.be.a(\"number\");",
+							"    pm.expect(responseBody.dimensions.height).to.be.a(\"number\");",
+							"    pm.expect(responseBody.dimensions.depth).to.be.a(\"number\");",
+							"});",
+							"",
+							"// Validar que las reviews sean un array y cada review tenga rating y comment",
+							"pm.test(\"Reviews válidas\", function () {",
+							"    pm.expect(responseBody.reviews).to.be.an(\"array\");",
+							"    responseBody.reviews.forEach(review => {",
+							"        pm.expect(review.rating).to.be.a(\"number\");",
+							"        pm.expect(review.comment).to.be.a(\"string\");",
+							"    });",
+							"});",
+							"",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/19",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"19"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto_Por_Id_NotFound",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"",
+							"",
+							"pm.test(\"Status code es 404 para producto inexistente\", function () {",
+							"    pm.response.to.have.status(404);",
+							"});",
+							"",
+							"pm.test(\"Mensaje de error correcto para producto inexistente\", function () {",
+							"    pm.expect(responseBody.message).to.eql(\"Product with id '1922' not found\");",
+							"});",
+							"",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/1922",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"1922"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Producto_Id_Actualizar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"const requestBody = JSON.parse(pm.request.body.raw);",
+							"",
+							"// Verificar que el ID sea 30",
+							"pm.test(\"Validar que el ID sea 30\", function () {",
+							"    pm.expect(responseBody.id).to.eql(30);",
+							"});",
+							"",
+							"// Validar que price, stock, rating y discountPercentage sean números",
+							"pm.test(\"price es número\", function () {",
+							"    pm.expect(responseBody.price).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"stock es número\", function () {",
+							"    pm.expect(responseBody.stock).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"rating es número\", function () {",
+							"    pm.expect(responseBody.rating).to.be.a(\"number\");",
+							"});",
+							"",
+							"pm.test(\"discountPercentage es número\", function () {",
+							"    pm.expect(responseBody.discountPercentage).to.be.a(\"number\");",
+							"});",
+							"",
+							"// Validar que el título no esté vacío",
+							"pm.test(\"Título no está vacío\", function () {",
+							"    pm.expect(responseBody.title).to.not.be.empty;",
+							"});",
+							"",
+							"// Validar que la categoría sea 'groceries'",
+							"pm.test(\"Categoria devuelto = Categoria enviado\", function(){",
+							"    pm.expect(responseBody.categoria).to.eql(requestBody.categoria);",
+							"});",
+							"",
+							"// Validar que el array de imágenes tenga al menos 1 elemento",
+							"pm.test(\"Tiene imágenes\", function () {",
+							"    pm.expect(responseBody.images.length).to.be.above(0);",
+							"});",
+							"",
+							"// Validar que todas las URLs de imágenes sean válidas y empiecen con https://",
+							"pm.test(\"URLs de imágenes válidas\", function () {",
+							"    pm.expect(responseBody.images).to.be.an(\"array\").that.is.not.empty;",
+							"    responseBody.images.forEach(url => {",
+							"        pm.expect(url).to.match(/^https:\\/\\/.+/);",
+							"    });",
+							"});",
+							"",
+							"// Validar que el thumbnail sea una URL válida y empiece con https://",
+							"pm.test(\"URL de thumbnail válida\", function () {",
+							"    pm.expect(responseBody.thumbnail).to.match(/^https:\\/\\/.+/);",
+							"});",
+							"",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"{{title}}\",\r\n    \"price\": {{price}},\r\n    \"discountPercentage\": {{discountPercentage}},\r\n    \"stock\": {{stock}},\r\n    \"rating\": {{rating}},\r\n    \"images\": [\r\n        \"{{images}}\"\r\n    ],\r\n    \"thumbnail\": \"{{thumbnail}}\",\r\n    \"description\": \"{{description}}\",\r\n    \"brand\": \"{{brand}}\",\r\n    \"category\": \"{{category}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/30",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"30"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Borrar_Producto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"(() => {",
+							"    const responseBody = pm.response.json();",
+							"    // tus tests aquí",
+							"",
+							"",
+							"// Verificar status code",
+							"pm.test(\"Status code es 200 o 204\", function () {",
+							"    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+							"});",
+							"",
+							"// Verificar mensaje de confirmación (si la API devuelve mensaje)",
+							"pm.test(\"Mensaje de borrado correcto\", function () {",
+							"    pm.expect(responseBody.message).to.match(/deleted|eliminado/i);",
+							"});",
+							"",
+							"// Probar que el producto ya no existe",
+							"pm.sendRequest({",
+							"    url: `https://dummyjson.com/products/1`, ",
+							"    method: 'GET'",
+							"}, function (err, res) {",
+							"    pm.test(\"Producto no existe después de borrar\", function () {",
+							"        pm.expect(res.code).to.eql(404);",
+							"    });",
+							"});",
+							"",
+							"})();"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/products/1",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

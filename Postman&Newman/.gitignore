@@ -1,0 +1,51 @@
+# =========================
+# Node.js / npm
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# =========================
+# Postman / Newman
+# =========================
+# Exported collections and environments
+*DummiEnv.json
+# Newman reports folder (dentro de Postman&Newman)
+Postman&Newman/reportes/
+Postman&Newman/reportes/**
+
+# Carpeta newman por defecto
+newman/
+newman/**
+reportes/
+
+# Local Postman workspace files
+.postman/
+
+
+
+# Jest cache
+jest-cache/
+jest-global-config.json
+
+# Test results
+*.log
+*.tmp
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# =========================
+# OS generated files
+# =========================
+ehthumbs.db
+desktop.ini
+.env
