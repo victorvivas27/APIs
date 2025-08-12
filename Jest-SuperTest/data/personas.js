@@ -1,5 +1,15 @@
 const personas = {
-  persona_01: { nombre: "Juan", apellido: "Perez", edad: 40 },
+  persona: { nombre: "Juan", apellido: "Perez", edad: 40 },
+  modificarPersona: { nuevoNombre: "Juan Carlos", apellido: "Perez", edad: 41 }
+  };
 
-};
-export default personas;
+
+const erroresApi = {
+  errorApi: {
+    errorServidor: "Error en el servidor",
+    personaNoEncontrada: "Persona no encontrada", 
+    faltanDatos: "Faltan datos requeridos (nombre, apellido, edad)"
+  },
+
+}
+module.exports = { personas, erroresApi };
