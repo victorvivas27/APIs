@@ -6,7 +6,7 @@ on:
     branches: [main]           # tu rama actual
     paths:
       - 'Jest-SuperTest/**'    # 👈 ajustado a tu carpeta real
-      - '.github/workflows/jest-supertest.yml'
+      - '.github/workflows/test-newman.yml'
 
 jobs:
   test:
