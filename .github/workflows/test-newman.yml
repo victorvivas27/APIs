@@ -1,0 +1,47 @@
+name: CI Jest-SuperTest
+
+on:
+  workflow_dispatch:           # permite ejecutarlo manualmente
+  push:
+    branches: [main]           # ajusta si tu rama no es main
+    paths:
+      - 'Modulo_05/APIs/Jest-SuperTest/**'
+      - '.github/workflows/jest-supertest.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: Modulo_05/APIs/Jest-SuperTest   # 👈 tu subcarpeta
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: Modulo_05/APIs/Jest-SuperTest/package-lock.json
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      # (Opcional) si tus tests usan .env, crea uno rápido:
+      # - name: Configurar .env
+      #   run: echo "API_BASE_URL=https://jsonplaceholder.typicode.com" > .env
+
+      - name: Ejecutar tests
+        run: npm test -- --runInBand     # en serie por si algún test abre puerto
+
+      - name: Subir cobertura (opcional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: Modulo_05/APIs/Jest-SuperTest/coverage/
+
+
+
+
+
