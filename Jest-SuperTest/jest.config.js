@@ -109,16 +109,17 @@ const config = {
     // projects: undefined,
 
     // Use this configuration option to add custom reporters to Jest
-    /*
-    reporters: [
-      "default",
-      ["jest-html-reporter", {
-        pageTitle: "Reporte de Pruebas",
-        outputPath: "./reports/html-report.html",
-       
-      }]
-    ],
-    */
+  reporters: [
+    'default',
+    [require.resolve('jest-html-reporters'), {
+      publicPath: './reports',
+      filename: 'index.html',
+      pageTitle: 'Reporte de Pruebas',
+      expand: true
+    }]
+  ],
+  coverageReporters: ['text', 'lcov', 'html'],
+
 
     // Automatically reset mock state before every test
     // resetMocks: false,
