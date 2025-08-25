@@ -28,6 +28,11 @@ jobs:
          uses: actions/upload-artifact@v4
          with:
           name: cobertura
-          path: Jest-SuperTest/coverage   
+          path: Jest-SuperTest/coverage 
+       - name: Guardar reporte HTML como artifact
+         uses: actions/upload-artifact@v4
+         with:
+          name: reporte-tests
+          path: Jest-SuperTest/reports/index.html  
           
           
