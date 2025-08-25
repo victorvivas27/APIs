@@ -17,7 +17,7 @@ let faltanDatos;
 describe("✅ Pruebas completas del modelo Personas", () => {
 
   beforeAll(async () => {
-    rutaPersonas = process.env.RUTA_PERSONAS;
+    rutaPersonas = "/personas";
   });
 
   beforeEach(() => {
