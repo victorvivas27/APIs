@@ -22,9 +22,6 @@ jobs:
        - name: Instalar dependencias
          run: npm install
 
-       - name: Levantar la API 
-         run: npm start &
-
        - name: Correr tests de Personas
          run: npm test -- test/api.personas.spec.js
           
